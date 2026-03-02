@@ -30,7 +30,7 @@ const RegisterPage = () => {
                     role: values.role
                 };
 
-                const response = await axios.post('http://localhost:8000/create-user', payload);
+                const response = await axios.post('https://military-dashboard-backend.onrender.com/create-user', payload);
 
                 if (response.status === 200) {
                     toast.success("ENLISTMENT PROCESSED. REPORT FOR DUTY.");
