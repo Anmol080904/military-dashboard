@@ -1,0 +1,47 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-military-900 text-military-50 font-mono;
+    background-image: var(--theme-color-bgImage);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-stencil tracking-widest uppercase;
+  }
+}
+
+@layer components {
+  .btn-military {
+    @apply px-4 py-2 bg-military-600 hover:bg-military-500 text-white font-bold border-2 border-military-400 shadow-md uppercase tracking-wider transition-all duration-200 active:scale-95;
+  }
+
+  .card-military {
+    @apply bg-military-card border border-military-500 p-4 rounded-sm shadow-lg backdrop-blur-sm relative overflow-hidden;
+  }
+
+  .card-military::before {
+    content: '';
+    @apply absolute top-0 left-0 w-2 h-2 border-t-2 border-l-2 border-military-300;
+  }
+
+  .card-military::after {
+    content: '';
+    @apply absolute bottom-0 right-0 w-2 h-2 border-b-2 border-r-2 border-military-300;
+  }
+
+  .input-military {
+    @apply bg-military-950 border border-military-600 text-military-100 p-2 focus:outline-none focus:border-military-400 w-full font-mono placeholder-military-700;
+  }
+
+  .badge-classified {
+    @apply bg-red-800 text-red-100 text-xs px-2 py-0.5 border border-red-600 uppercase tracking-widest font-bold inline-block transform -rotate-2;
+  }
+}

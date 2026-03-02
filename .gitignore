@@ -1,0 +1,4 @@
+military-news-backend/military-backend/.env
+military-news-backend/military-backend/alembic
+military-news-backend/military-backend/alembic.ini
+military-news-backend/military-backend/test_error.txt
