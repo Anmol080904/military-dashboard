@@ -1,3 +1,2 @@
-#!/usr/bin/env sh
-echo "PRE COMMIT RUNNING"
-exit 1
+cd Military-News
+npx lint-staged
