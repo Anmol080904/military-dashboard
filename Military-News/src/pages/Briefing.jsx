@@ -28,4 +28,4 @@ const Briefing = () => {
     );
 };
 
-export default Briefing;
+export default ;

@@ -1,33 +1,32 @@
 {
-  "name": "military-news",
+  "name": "mini-vendor-front",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
+    "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
+    "lint:fix": "eslint src --ext .js,.jsx,.ts,.tsx --fix",
+    "format": "prettier --write .",
+    "preview": "vite preview",
+    "prepare": "husky"
   },
   "dependencies": {
-    "@babel/runtime": "^7.28.6",
     "@reduxjs/toolkit": "^2.11.2",
-    "autoprefixer": "^10.4.24",
-    "axios": "^1.13.5",
+    "@tailwindcss/vite": "^4.2.1",
+    "axios": "^1.13.6",
     "chart.js": "^4.5.1",
-    "clsx": "^2.1.1",
     "formik": "^2.4.9",
-    "lucide-react": "^0.563.0",
-    "postcss": "^8.5.6",
+    "lucide-react": "^0.575.0",
+    "prop-types": "^15.8.1",
     "react": "^19.2.0",
     "react-chartjs-2": "^5.3.1",
-    "react-console-emulator": "^5.0.2",
     "react-dom": "^19.2.0",
     "react-hot-toast": "^2.6.0",
     "react-redux": "^9.2.0",
-    "react-router-dom": "^7.13.0",
-    "tailwind-merge": "^3.4.0",
-    "tailwindcss": "^3.4.19",
+    "react-router-dom": "^7.13.1",
+    "redux-persist": "^6.0.0",
     "yup": "^1.7.1"
   },
   "devDependencies": {
@@ -35,10 +34,25 @@
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.1",
-    "eslint": "^9.39.1",
+    "autoprefixer": "^10.4.27",
+    "eslint": "^9.39.3",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.5",
+    "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
     "globals": "^16.5.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.3.1",
+    "postcss": "^8.5.6",
+    "prettier": "^3.8.1",
+    "tailwindcss": "^4.2.1",
     "vite": "^7.3.1"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ]
   }
 }
