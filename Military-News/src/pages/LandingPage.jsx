@@ -71,7 +71,7 @@ const LandingPage = () => {
 
                         <div className="text-military-500 font-mono text-sm hidden sm:block">OR</div>
 
-                        <Link to="/register" className="group relative w-64">
+               to="/register" className="group relative w-64">
                             <button className="relative w-full py-4 bg-transparent hover:bg-military-800 text-military-200 font-bold border-2 border-military-600 transition-all font-stencil tracking-widest uppercase flex items-center justify-center gap-2 group-hover:border-military-400 group-hover:text-military-50 group-hover:scale-105">
                                 ENLIST NOW
                                 <ChevronRight size={20} className="text-military-400 group-hover:text-military-200 transition-colors" />
@@ -79,7 +79,8 @@ const LandingPage = () => {
                         </Link>
                     </div>
 
-               
+                </div>
+            </div>
 
             {/* Footer */}
             <div className="w-full bg-military-950 border-t border-military-800 p-4 z-10 text-center flex flex-col sm:flex-row justify-between items-center gap-2 relative">
