@@ -29,7 +29,8 @@ const LandingPage = () => {
                     pageLoadAnimation
                     brightness={1}
                 />
-      
+            </div>
+            
             {/* Top Bar */}
             <div className="w-full bg-military-900 border-b border-military-700 p-4 z-10 flex justify-between items-center relative">
                 <div className="flex items-center gap-3">
@@ -78,8 +79,7 @@ const LandingPage = () => {
                         </Link>
                     </div>
 
-                </div>
-            </div>
+               
 
             {/* Footer */}
             <div className="w-full bg-military-950 border-t border-military-800 p-4 z-10 text-center flex flex-col sm:flex-row justify-between items-center gap-2 relative">
