@@ -29,8 +29,7 @@ const LandingPage = () => {
                     pageLoadAnimation
                     brightness={1}
                 />
-            </div>
-            
+      
             {/* Top Bar */}
             <div className="w-full bg-military-900 border-b border-military-700 p-4 z-10 flex justify-between items-center relative">
                 <div className="flex items-center gap-3">
