@@ -1,9 +1,9 @@
 import React from 'react';
 import { Shield, ChevronRight, KeyRound } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import FaultyTerminal from './FaultyTerminal';
+import from './FaultyTerminal';
 
-import '';
+import './FaultyTerminal.css';
 
 const LandingPage = () => {
     return (
