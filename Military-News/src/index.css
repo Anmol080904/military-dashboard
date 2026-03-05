@@ -1,7 +1,6 @@
 @import "tailwindcss";
 @config "../tailwind.config.cjs";
 
-
 @layer base {
   body {
     @apply bg-military-900 text-military-50 font-mono;
@@ -28,12 +27,12 @@
   }
 
   .card-military::before {
-    content: '';
+    content: "";
     @apply absolute top-0 left-0 w-2 h-2 border-t-2 border-l-2 border-military-300;
   }
 
   .card-military::after {
-    content: '';
+    content: "";
     @apply absolute bottom-0 right-0 w-2 h-2 border-b-2 border-r-2 border-military-300;
   }
 
@@ -44,4 +43,158 @@
   .badge-classified {
     @apply bg-red-800 text-red-100 text-xs px-2 py-0.5 border border-red-600 uppercase tracking-widest font-bold inline-block transform -rotate-2;
   }
+}
+
+/* Page transition loading spinner */
+@keyframes military-scan {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+@keyframes radar-sweep {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes flicker {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+  92% {
+    opacity: 1;
+  }
+  94% {
+    opacity: 0.3;
+  }
+  96% {
+    opacity: 1;
+  }
+}
+
+@keyframes type-cursor {
+  0%,
+  100% {
+    border-color: transparent;
+  }
+  50% {
+    border-color: currentColor;
+  }
+}
+
+@keyframes slide-up-fade {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes glow-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 5px rgba(74, 222, 128, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(74, 222, 128, 0.6);
+  }
+}
+
+@keyframes threat-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 10px rgba(239, 68, 68, 0.3);
+  }
+  50% {
+    box-shadow:
+      0 0 30px rgba(239, 68, 68, 0.7),
+      0 0 60px rgba(239, 68, 68, 0.3);
+  }
+}
+
+@keyframes scanline {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.1;
+  }
+  100% {
+    transform: translateY(100vh);
+    opacity: 0.3;
+  }
+}
+
+.animate-flicker {
+  animation: flicker 3s infinite;
+}
+
+.animate-glow-pulse {
+  animation: glow-pulse 2s infinite;
+}
+
+.animate-threat-pulse {
+  animation: threat-pulse 1.5s infinite;
+}
+
+.animate-slide-up {
+  animation: slide-up-fade 0.5s ease-out forwards;
+}
+
+.stagger-1 {
+  animation-delay: 0.05s;
+}
+.stagger-2 {
+  animation-delay: 0.1s;
+}
+.stagger-3 {
+  animation-delay: 0.15s;
+}
+.stagger-4 {
+  animation-delay: 0.2s;
+}
+.stagger-5 {
+  animation-delay: 0.25s;
+}
+.stagger-6 {
+  animation-delay: 0.3s;
+}
+.stagger-7 {
+  animation-delay: 0.35s;
+}
+.stagger-8 {
+  animation-delay: 0.4s;
+}
+
+/* Custom scrollbar for military theme */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(75, 83, 32, 0.1);
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(75, 83, 32, 0.4);
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(75, 83, 32, 0.6);
 }
