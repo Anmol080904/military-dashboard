@@ -1,2 +1,1 @@
-cd Military-News
-npx lint-staged
+npm test

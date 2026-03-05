@@ -14,6 +14,7 @@ import Armory from './pages/Armory';
 import Briefing from './pages/Briefing';
 import CurrentStatus from './pages/CurrentStatus';
 
+import LandingPage from './pages/LandingPage';
 import ProtectedRoute from './components/ProtectedRoute';
 
 const App = () => {
@@ -33,13 +34,13 @@ const App = () => {
       />
 
       <Routes>
+        <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
 
         <Route element={<ProtectedRoute />}>
-          <Route path="/" element={<MainLayout />}>
-            <Route index element={<Navigate to="/dashboard" replace />} />
-            <Route path="dashboard" element={<Dashboard />} />
+          <Route element={<MainLayout />}>
+            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="players" element={<Troop />} />
             <Route path="schedule" element={<MissionSchedule />} />
             <Route path="history" element={<Logs />} />

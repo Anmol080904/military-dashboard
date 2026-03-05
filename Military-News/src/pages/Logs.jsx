@@ -1,15 +1,27 @@
-import React, { useState } from 'react';
-import { Terminal as TerminalIcon, X } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Terminal as TerminalIcon, X, Loader } from 'lucide-react';
 import Terminal from 'react-console-emulator';
+import axios from 'axios';
 
 const Logs = () => {
     const [isTerminalOpen, setIsTerminalOpen] = useState(false);
+    const [logs, setLogs] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-    const logs = [
-        { id: "LOG-992", timestamp: "02-10-2026 04:30:00", author: "COMMANDER Vikram", body: "Recon squad Alpha reported multiple undocumented hostile contacts near Sector 4. Withdrawing for artillery bombardment." },
-        { id: "LOG-991", timestamp: "02-09-2026 18:15:00", author: "LIEUTENANT Mohan", body: "Supply drop intercepted. Rations depleted. Requesting immediate extraction at coordinates 34.22, -118.42." },
-        { id: "LOG-990", timestamp: "02-08-2026 09:00:00", author: "GENERAL Ajit", body: "Operation Iron Shield was a success. Enemy stronghold secured. No casualties reported. Medals pending." },
-    ];
+    useEffect(() => {
+        const fetchLogs = async () => {
+            try {
+                const response = await axios.get('https://military-dashboard-backend.onrender.com/logs');
+                // Sort by timestamp if possible or rely on backend order
+                setLogs(response.data);
+            } catch (error) {
+                console.error("Failed to fetch logs:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchLogs();
+    }, []);
 
     return (
         <div className="flex flex-col h-full text-military-300 gap-6">
@@ -24,21 +36,27 @@ const Logs = () => {
                 </div>
             </div>
 
-            <div className="bg-military-layout border border-military-600 p-4 rounded-sm font-mono text-sm space-y-6 overflow-y-auto max-h-[70vh] shadow-[inset_0_0_20px_rgba(0,0,0,0.5)]">
-                {logs.map((log) => (
-                    <div key={log.id} className="border-l-4 border-military-500 pl-4 relative group">
-                        <div className="absolute w-2 h-2 bg-military-300 -left-[11px] top-1 group-hover:bg-yellow-400 transition-colors"></div>
-                        <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4 mb-2 text-military-400 text-xs">
-                            <span className="bg-military-800 px-2 py-0.5 border border-military-700">{log.id}</span>
-                            <span>{log.timestamp}</span>
-                            <span className="text-military-100 font-bold tracking-widest">{log.author}</span>
+            {loading ? (
+                <div className="flex-1 flex justify-center items-center">
+                    <Loader className="animate-spin text-military-400" size={48} />
+                </div>
+            ) : (
+                <div className="bg-military-layout border border-military-600 p-4 rounded-sm font-mono text-sm space-y-6 overflow-y-auto max-h-[70vh] shadow-[inset_0_0_20px_rgba(0,0,0,0.5)]">
+                    {logs.map((log, index) => (
+                        <div key={log.id || index} className="border-l-4 border-military-500 pl-4 relative group">
+                            <div className="absolute w-2 h-2 bg-military-300 -left-[11px] top-1 group-hover:bg-yellow-400 transition-colors"></div>
+                            <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4 mb-2 text-military-400 text-xs">
+                                <span className="bg-military-800 px-2 py-0.5 border border-military-700">{log.log_id || log.id}</span>
+                                <span>{log.timestamp}</span>
+                                <span className="text-military-100 font-bold tracking-widest">{log.author}</span>
+                            </div>
+                            <p className="text-military-50 leading-relaxed font-mono">
+                                {`> ${log.body}`}
+                            </p>
                         </div>
-                        <p className="text-military-50 leading-relaxed font-mono">
-                            {`> ${log.body}`}
-                        </p>
-                    </div>
-                ))}
-            </div>
+                    ))}
+                </div>
+            )}
 
             <div className="mt-auto pt-4 border-t border-military-700 text-xs font-mono text-military-500 flex items-center gap-2">
                 <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
@@ -81,8 +99,8 @@ const Logs = () => {
                                     welcomeMessage={'Welcome to Military OS v4.2.1. Type "help" for a list of commands.'}
                                     promptLabel={'OPERATIVE@HQ:~$'}
                                     autoFocus
-                                    style={{ 
-                                        height: '100%', 
+                                    style={{
+                                        height: '100%',
                                         background: 'black',
                                         borderRadius: '0px'
                                     }}

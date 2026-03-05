@@ -43,7 +43,6 @@ const Header = () => {
                             onClick={() => setShowNotifications(!showNotifications)}
                         >
                             <Bell size={20} />
-                            <span className="absolute top-2 right-2.5 block h-2 w-2 rounded-full bg-red-600 ring-2 ring-military-900"></span>
                         </button>
                         <div
                             className={`absolute right-0 mt-2 w-80 bg-military-950 border border-military-600 shadow-2xl rounded-sm z-50 transform origin-top-right transition-all duration-300 ease-out ${showNotifications ? "scale-100 opacity-100" : "scale-95 opacity-0 pointer-events-none"
