@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import { Shield, UserSearch, Loader, Plus, X } from "lucide-react";
 import axios from "axios";
-
-const API_BASE = "http://localhost:8000";
+import API_BASE from "../config/api";
 
 const emptyTroop = { name: "", email: "", password: "", role: "soldier" };
 const ROLE_OPTIONS = ["soldier", "captain", "general"];

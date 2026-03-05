@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import API_BASE from "../config/api";
 import { useSelector } from "react-redux";
 import { Shield, Mail, Medal } from "lucide-react";
 
@@ -11,7 +12,7 @@ const UserDirectory = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/users", {
+        const response = await axios.get(`${API_BASE}/users`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

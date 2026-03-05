@@ -1,6 +1,7 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
+import API_BASE from "../config/api";
 import { useDispatch } from "react-redux";
 import { loginReducer } from "../features/auth/authSlice";
 import { useNavigate, Link } from "react-router-dom";
@@ -19,7 +20,7 @@ const LoginPage = () => {
     }),
     onSubmit: async (values) => {
       try {
-        const response = await axios.post("http://localhost:8000/login", {
+        const response = await axios.post(`${API_BASE}/login`, {
           email: values.email,
           password: values.password,
         });

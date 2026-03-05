@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Map, Flag } from "lucide-react";
+import API_BASE from "../config/api";
 
 const Briefing = () => {
   const [criticalMissions, setCriticalMissions] = useState([]);
@@ -9,7 +10,7 @@ const Briefing = () => {
   useEffect(() => {
     const fetchMissions = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/missions");
+        const response = await axios.get(`${API_BASE}/missions`);
         const crits = response.data.filter((m) => m.priority === "Critical");
         setCriticalMissions(crits);
       } catch (error) {

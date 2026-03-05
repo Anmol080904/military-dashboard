@@ -10,8 +10,7 @@ import {
   X,
 } from "lucide-react";
 import axios from "axios";
-
-const API_BASE = "http://localhost:8000";
+import API_BASE from "../config/api";
 
 const PRIORITY_OPTIONS = ["Critical", "Medium", "Low"];
 const STATUS_OPTIONS = ["Pending", "Ongoing", "Completed"];

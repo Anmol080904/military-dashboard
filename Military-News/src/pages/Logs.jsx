@@ -2,8 +2,7 @@ import { useState, useEffect } from "react";
 import { Terminal as TerminalIcon, X, Loader, Plus } from "lucide-react";
 import Terminal from "react-console-emulator";
 import axios from "axios";
-
-const API_BASE = "http://localhost:8000";
+import API_BASE from "../config/api";
 
 const emptyLog = { log_id: "", timestamp: "", author: "", body: "" };
 

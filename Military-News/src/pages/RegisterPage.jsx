@@ -1,6 +1,7 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
+import API_BASE from "../config/api";
 
 import { useNavigate, Link } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -34,10 +35,7 @@ const RegisterPage = () => {
           role: values.role,
         };
 
-        const response = await axios.post(
-          "http://localhost:8000/create-user",
-          payload,
-        );
+        const response = await axios.post(`${API_BASE}/create-user`, payload);
 
         if (response.status === 200) {
           toast.success("ENLISTMENT PROCESSED. REPORT FOR DUTY.");

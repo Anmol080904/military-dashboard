@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Target } from "lucide-react";
+import API_BASE from "../config/api";
 import {
   Chart as ChartJS,
   ArcElement,
@@ -30,7 +31,7 @@ const Armory = () => {
   useEffect(() => {
     const fetchArmory = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/armory");
+        const response = await axios.get(`${API_BASE}/armory`);
         setWeapons(response.data);
       } catch (error) {
         console.error("Failed to fetch armory data:", error);
