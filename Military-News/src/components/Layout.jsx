@@ -19,7 +19,7 @@ const Layout = () => {
       <Header />
 
       <div className="flex flex-1 relative">
-        <aside className="w-64 hidden md:block border-r border-military-800 bg-military-950">
+        <aside className="w-52 hidden md:block border-r border-military-800 bg-military-950">
           <Sidebar />
         </aside>
 
@@ -31,14 +31,14 @@ const Layout = () => {
         )}
 
         <aside
-          className={`fixed inset-y-0 left-0 w-64 bg-military-950 z-50 transform transition-transform duration-300 ease-in-out md:hidden flex flex-col pt-16
+          className={`fixed inset-y-0 left-0 w-52 bg-military-950 z-50 transform transition-transform duration-300 ease-in-out md:hidden flex flex-col pt-16
                     ${isMobileSidebarOpen ? "translate-x-0" : "-translate-x-full"}`}
         >
           <Sidebar />
         </aside>
 
         <main className="flex-1 p-6 bg-military-900 relative w-full overflow-hidden">
-          <div className="max-w-7xl mx-auto rounded-sm border border-military-700 bg-military-layout p-6 min-h-[60vh] shadow-2xl backdrop-blur-sm relative z-10 w-full overflow-x-auto">
+          <div className="rounded-sm border border-military-700 bg-military-layout p-6 min-h-[60vh] shadow-2xl backdrop-blur-sm relative z-10 w-full overflow-x-auto">
             <AnimatePresence mode="wait">
               <Outlet key={location.pathname} />
             </AnimatePresence>

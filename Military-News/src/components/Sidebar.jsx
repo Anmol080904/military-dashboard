@@ -39,13 +39,13 @@ const Sidebar = () => {
 
   return (
     <div className="h-full flex flex-col bg-military-900 border-r border-military-700 transition-colors duration-300">
-      <nav className="flex-1 px-4 py-6 space-y-2">
+      <nav className="flex-1 px-3 py-5 space-y-1">
         {menuItems.map((item) => (
           <NavLink
             key={item.path}
             to={item.path}
             className={({ isActive }) => `
-              flex items-center gap-3 px-4 py-3 rounded-sm transition-all duration-200 group border-l-4
+              flex items-center gap-2.5 px-3 py-2.5 rounded-sm transition-all duration-200 group border-l-4
               ${
                 isActive
                   ? "bg-military-800 border-l-military-400 text-military-100 font-bold tracking-wider"
@@ -56,7 +56,7 @@ const Sidebar = () => {
             <span className="transition-transform duration-200 group-hover:scale-110">
               {item.icon}
             </span>
-            <span className="text-sm font-stencil uppercase">{item.name}</span>
+            <span className="text-xs font-stencil uppercase">{item.name}</span>
           </NavLink>
         ))}
       </nav>
