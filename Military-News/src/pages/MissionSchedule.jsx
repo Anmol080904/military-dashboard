@@ -22,6 +22,7 @@ import {
   useDeleteMission,
 } from "../hooks/useApi";
 import DeleteConfirmModal from "../components/DeleteConfirmModal";
+import SidePanel from "../components/SidePanel";
 
 const PRIORITY_OPTIONS = ["Critical", "Medium", "Low"];
 const STATUS_OPTIONS = ["Pending", "Ongoing", "Completed"];
@@ -58,6 +59,7 @@ const MissionSchedule = () => {
   const [error, setError] = useState(null);
   const [filterPriority, setFilterPriority] = useState("All");
   const [deleteTarget, setDeleteTarget] = useState(null);
+  const [showUpdatePanel, setShowUpdatePanel] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -72,13 +74,8 @@ const MissionSchedule = () => {
     };
 
     try {
-      if (editingId) {
-        await updateMission.mutateAsync({ id: editingId, payload });
-      } else {
-        await createMission.mutateAsync(payload);
-      }
+      await createMission.mutateAsync(payload);
       setShowForm(false);
-      setEditingId(null);
       setFormData(emptyForm);
     } catch (err) {
       const detail = err.response?.data?.detail;
@@ -88,6 +85,35 @@ const MissionSchedule = () => {
         setError(detail.map((d) => d.msg).join(", "));
       } else {
         setError("Failed to save mission directive. Check inputs.");
+      }
+    }
+  };
+
+  const handleUpdateSubmit = async (e) => {
+    e.preventDefault();
+    setError(null);
+    const payload = {
+      mission_id: formData.mission_id,
+      name: formData.name,
+      date: formData.date,
+      priority: formData.priority,
+      status: formData.status,
+      target: formData.target,
+    };
+
+    try {
+      await updateMission.mutateAsync({ id: editingId, payload });
+      setShowUpdatePanel(false);
+      setEditingId(null);
+      setFormData(emptyForm);
+    } catch (err) {
+      const detail = err.response?.data?.detail;
+      if (typeof detail === "string") {
+        setError(detail);
+      } else if (Array.isArray(detail) && detail.length > 0) {
+        setError(detail.map((d) => d.msg).join(", "));
+      } else {
+        setError("Failed to update mission directive. Check inputs.");
       }
     }
   };
@@ -102,7 +128,7 @@ const MissionSchedule = () => {
       target: mission.target,
     });
     setEditingId(mission.id);
-    setShowForm(true);
+    setShowUpdatePanel(true);
     setError(null);
   };
 
@@ -136,6 +162,9 @@ const MissionSchedule = () => {
       : schedules.filter((m) => m.priority === filterPriority);
 
   const isSubmitting = createMission.isPending || updateMission.isPending;
+
+  const inputClass =
+    "w-full bg-military-950 border border-military-600 px-3 py-2.5 text-military-100 font-mono text-sm placeholder-military-600 focus:border-military-400 focus:outline-none transition-colors";
 
   return (
     <AnimatedPage className="flex flex-col h-full text-military-300 gap-6">
@@ -210,7 +239,7 @@ const MissionSchedule = () => {
               <X size={20} />
             </button>
             <h2 className="text-lg font-stencil text-military-100 mb-4 uppercase">
-              {editingId ? "UPDATE DIRECTIVE" : "NEW DIRECTIVE"}
+              NEW DIRECTIVE
             </h2>
             <form
               onSubmit={handleSubmit}
@@ -284,11 +313,7 @@ const MissionSchedule = () => {
                   disabled={isSubmitting}
                   className="w-full py-2 bg-military-600 border border-military-400 text-military-100 font-stencil uppercase tracking-widest hover:bg-military-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98]"
                 >
-                  {isSubmitting
-                    ? "TRANSMITTING..."
-                    : editingId
-                      ? "UPDATE DIRECTIVE"
-                      : "DEPLOY DIRECTIVE"}
+                  {isSubmitting ? "TRANSMITTING..." : "DEPLOY DIRECTIVE"}
                 </button>
               </div>
             </form>
@@ -408,6 +433,132 @@ const MissionSchedule = () => {
           )}
         </div>
       )}
+
+      <SidePanel
+        isOpen={showUpdatePanel}
+        onClose={() => {
+          setShowUpdatePanel(false);
+          setEditingId(null);
+          setFormData(emptyForm);
+          setError(null);
+        }}
+        title="Update Directive"
+      >
+        <form onSubmit={handleUpdateSubmit} className="flex flex-col gap-5">
+          {error && (
+            <div className="flex items-center gap-2 bg-red-900/30 border border-red-700 px-4 py-3 text-red-400 font-mono text-sm">
+              <AlertTriangle size={16} />
+              {error}
+            </div>
+          )}
+
+          <div>
+            <label className="text-xs font-mono text-military-400 uppercase ml-1 block mb-1.5">
+              Mission ID
+            </label>
+            <input
+              className={inputClass}
+              placeholder="MISSION ID (e.g. OP-ALPHA)"
+              value={formData.mission_id}
+              onChange={(e) =>
+                setFormData({ ...formData, mission_id: e.target.value })
+              }
+              required
+            />
+          </div>
+
+          <div>
+            <label className="text-xs font-mono text-military-400 uppercase ml-1 block mb-1.5">
+              Mission Name
+            </label>
+            <input
+              className={inputClass}
+              placeholder="MISSION NAME"
+              value={formData.name}
+              onChange={(e) =>
+                setFormData({ ...formData, name: e.target.value })
+              }
+              required
+            />
+          </div>
+
+          <div>
+            <label className="text-xs font-mono text-military-400 uppercase ml-1 block mb-1.5">
+              Deployment Date
+            </label>
+            <input
+              className={inputClass}
+              placeholder="DATE (e.g. 2026-03-15 0600H)"
+              value={formData.date}
+              onChange={(e) =>
+                setFormData({ ...formData, date: e.target.value })
+              }
+              required
+            />
+          </div>
+
+          <div>
+            <label className="text-xs font-mono text-military-400 uppercase ml-1 block mb-1.5">
+              Target Vector
+            </label>
+            <input
+              className={inputClass}
+              placeholder="TARGET VECTOR"
+              value={formData.target}
+              onChange={(e) =>
+                setFormData({ ...formData, target: e.target.value })
+              }
+              required
+            />
+          </div>
+
+          <div>
+            <label className="text-xs font-mono text-military-400 uppercase ml-1 block mb-1.5">
+              Priority
+            </label>
+            <select
+              className={inputClass}
+              value={formData.priority}
+              onChange={(e) =>
+                setFormData({ ...formData, priority: e.target.value })
+              }
+            >
+              {PRIORITY_OPTIONS.map((p) => (
+                <option key={p} value={p}>
+                  {p}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label className="text-xs font-mono text-military-400 uppercase ml-1 block mb-1.5">
+              Status
+            </label>
+            <select
+              className={inputClass}
+              value={formData.status}
+              onChange={(e) =>
+                setFormData({ ...formData, status: e.target.value })
+              }
+            >
+              {STATUS_OPTIONS.map((s) => (
+                <option key={s} value={s}>
+                  {s}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <button
+            type="submit"
+            disabled={updateMission.isPending}
+            className="w-full py-3 mt-2 bg-yellow-700/30 border border-yellow-600 text-yellow-400 font-stencil uppercase tracking-widest hover:bg-yellow-700/50 transition-all disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98]"
+          >
+            {updateMission.isPending ? "TRANSMITTING..." : "UPDATE DIRECTIVE"}
+          </button>
+        </form>
+      </SidePanel>
 
       <DeleteConfirmModal
         isOpen={!!deleteTarget}

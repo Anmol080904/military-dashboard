@@ -118,3 +118,12 @@ export const useDeleteTroop = () => {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["troops"] }),
   });
 };
+
+export const useUpdateTroop = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, payload }) =>
+      axios.put(`${API_BASE}/troops/${id}`, payload),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["troops"] }),
+  });
+};
