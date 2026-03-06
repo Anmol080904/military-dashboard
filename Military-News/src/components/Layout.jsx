@@ -19,7 +19,7 @@ const Layout = () => {
       <Header />
 
       <div className="flex flex-1 relative">
-        <aside className="w-52 hidden md:block border-r border-military-800 bg-military-950">
+        <aside className="w-60 hidden md:block border-r border-military-800 bg-military-950">
           <Sidebar />
         </aside>
 
@@ -31,7 +31,7 @@ const Layout = () => {
         )}
 
         <aside
-          className={`fixed inset-y-0 left-0 w-52 bg-military-950 z-50 transform transition-transform duration-300 ease-in-out md:hidden flex flex-col pt-16
+          className={`fixed inset-y-0 left-0 w-60 bg-military-950 z-50 transform transition-transform duration-300 ease-in-out md:hidden flex flex-col pt-16
                     ${isMobileSidebarOpen ? "translate-x-0" : "-translate-x-full"}`}
         >
           <Sidebar />
