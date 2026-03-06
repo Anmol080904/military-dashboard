@@ -5,12 +5,13 @@ import axios from "axios";
 import API_BASE from "../config/api";
 import { useNavigate, Link } from "react-router-dom";
 import toast from "react-hot-toast";
-import { FileSignature, Eye, EyeOff } from "lucide-react";
+import { FileSignature, Eye, EyeOff, Loader } from "lucide-react";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -29,6 +30,7 @@ const RegisterPage = () => {
         .required("REQUIRED"),
     }),
     onSubmit: async (values) => {
+      setIsSubmitting(true);
       try {
         const payload = {
           name: values.name,
@@ -59,6 +61,8 @@ const RegisterPage = () => {
 
         toast.error(errorMessage);
         console.error("Registration error:", error);
+      } finally {
+        setIsSubmitting(false);
       }
     },
   });
@@ -193,9 +197,17 @@ const RegisterPage = () => {
 
           <button
             type="submit"
-            className="w-full py-3 bg-military-700 hover:bg-military-600 text-military-50 font-bold border border-military-500 transition-all font-stencil tracking-widest uppercase shadow-[0_0_10px_rgba(75,83,32,0.5)]"
+            disabled={isSubmitting}
+            className="w-full py-3 bg-military-700 hover:bg-military-600 text-military-50 font-bold border border-military-500 transition-all font-stencil tracking-widest uppercase shadow-[0_0_10px_rgba(75,83,32,0.5)] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
-            Submit Application
+            {isSubmitting ? (
+              <>
+                <Loader size={18} className="animate-spin" />
+                Processing Enlistment...
+              </>
+            ) : (
+              "Submit Application"
+            )}
           </button>
         </form>
 

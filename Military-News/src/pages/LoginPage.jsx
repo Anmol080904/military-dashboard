@@ -7,12 +7,13 @@ import { useDispatch } from "react-redux";
 import { loginReducer } from "../features/auth/authSlice";
 import { useNavigate, Link } from "react-router-dom";
 import toast from "react-hot-toast";
-import { ShieldBan, Eye, EyeOff } from "lucide-react";
+import { ShieldBan, Eye, EyeOff, Loader } from "lucide-react";
 
 const LoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const formik = useFormik({
     initialValues: { email: "", password: "" },
@@ -21,6 +22,7 @@ const LoginPage = () => {
       password: Yup.string().min(6, "MIN 6 CHARACTERS").required("REQUIRED"),
     }),
     onSubmit: async (values) => {
+      setIsSubmitting(true);
       try {
         const response = await axios.post(`${API_BASE}/login`, {
           email: values.email,
@@ -47,6 +49,8 @@ const LoginPage = () => {
           error.response?.data?.detail || "ACCESS DENIED. INVALID CREDENTIALS.",
         );
         console.error("Login error:", error);
+      } finally {
+        setIsSubmitting(false);
       }
     },
   });
@@ -114,9 +118,17 @@ const LoginPage = () => {
           </div>
           <button
             type="submit"
-            className="w-full py-3 bg-military-700 hover:bg-military-600 text-military-50 font-bold border border-military-500 transition-all font-stencil tracking-widest uppercase shadow-[0_0_10px_rgba(75,83,32,0.5)]"
+            disabled={isSubmitting}
+            className="w-full py-3 bg-military-700 hover:bg-military-600 text-military-50 font-bold border border-military-500 transition-all font-stencil tracking-widest uppercase shadow-[0_0_10px_rgba(75,83,32,0.5)] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
-            Authenticate
+            {isSubmitting ? (
+              <>
+                <Loader size={18} className="animate-spin" />
+                Authenticating...
+              </>
+            ) : (
+              "Authenticate"
+            )}
           </button>
         </form>
         <p className="text-center mt-6 text-military-500 text-xs font-mono">
