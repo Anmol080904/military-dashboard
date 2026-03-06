@@ -1,9 +1,19 @@
 import { useState } from "react";
-import { Shield, UserSearch, Loader, Plus, X } from "lucide-react";
+import {
+  Shield,
+  UserSearch,
+  Loader,
+  Plus,
+  X,
+  Trash2,
+  Eye,
+  EyeOff,
+} from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import AnimatedPage from "../components/AnimatedPage";
 import { childVariants } from "../utils/animationVariants";
-import { useTroops, useCreateTroop } from "../hooks/useApi";
+import { useTroops, useCreateTroop, useDeleteTroop } from "../hooks/useApi";
+import DeleteConfirmModal from "../components/DeleteConfirmModal";
 
 const emptyTroop = { name: "", email: "", password: "", role: "soldier" };
 const ROLE_OPTIONS = ["soldier", "captain", "general"];
@@ -11,9 +21,12 @@ const ROLE_OPTIONS = ["soldier", "captain", "general"];
 const Troop = () => {
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState(emptyTroop);
+  const [showPassword, setShowPassword] = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState(null);
 
   const { data: roster = [], isLoading } = useTroops();
   const createTroop = useCreateTroop();
+  const deleteTroop = useDeleteTroop();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,6 +37,22 @@ const Troop = () => {
     } catch (error) {
       console.error("Failed to deploy troop:", error);
       alert(error.response?.data?.detail || "Failed to deploy troop");
+    }
+  };
+
+  const handleDeleteClick = (operative) => {
+    setDeleteTarget(operative);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!deleteTarget) return;
+    try {
+      await deleteTroop.mutateAsync(deleteTarget.id);
+    } catch (error) {
+      console.error("Failed to remove troop:", error);
+      alert(error.response?.data?.detail || "Failed to remove troop");
+    } finally {
+      setDeleteTarget(null);
     }
   };
 
@@ -94,16 +123,25 @@ const Troop = () => {
                 }
                 required
               />
-              <input
-                className="bg-military-950 border border-military-600 px-3 py-2 text-military-100 font-mono text-sm placeholder-military-600 focus:border-military-400 focus:outline-none transition-colors"
-                type="password"
-                placeholder="ACCESS CODE"
-                value={formData.password}
-                onChange={(e) =>
-                  setFormData({ ...formData, password: e.target.value })
-                }
-                required
-              />
+              <div className="relative">
+                <input
+                  className="w-full bg-military-950 border border-military-600 px-3 py-2 pr-10 text-military-100 font-mono text-sm placeholder-military-600 focus:border-military-400 focus:outline-none transition-colors"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="ACCESS CODE"
+                  value={formData.password}
+                  onChange={(e) =>
+                    setFormData({ ...formData, password: e.target.value })
+                  }
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-military-500 hover:text-military-200 transition-colors"
+                >
+                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                </button>
+              </div>
               <select
                 className="bg-military-950 border border-military-600 px-3 py-2 text-military-100 font-mono text-sm focus:border-military-400 focus:outline-none transition-colors"
                 value={formData.role}
@@ -158,7 +196,7 @@ const Troop = () => {
                     {operative.name}
                   </h3>
                   <p className="text-xs text-military-400 font-mono">
-                    ID: {operative.id}
+                    ID: {operative.display_id || operative.id}
                   </p>
                 </div>
               </div>
@@ -193,10 +231,28 @@ const Troop = () => {
                   </p>
                 </div>
               </div>
+
+              <div className="flex gap-2 mt-4 pt-3 border-t border-military-600 border-dashed">
+                <motion.button
+                  whileHover={{ scale: 1.15 }}
+                  whileTap={{ scale: 0.9 }}
+                  onClick={() => handleDeleteClick(operative)}
+                  className="p-1.5 border border-military-600 text-military-400 hover:text-red-500 hover:border-red-500 transition-colors"
+                >
+                  <Trash2 size={14} />
+                </motion.button>
+              </div>
             </motion.div>
           ))}
         </div>
       )}
+
+      <DeleteConfirmModal
+        isOpen={!!deleteTarget}
+        onClose={() => setDeleteTarget(null)}
+        onConfirm={handleDeleteConfirm}
+        itemName={deleteTarget?.name || "this operative"}
+      />
     </AnimatedPage>
   );
 };

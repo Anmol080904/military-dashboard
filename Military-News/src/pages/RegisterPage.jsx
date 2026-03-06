@@ -1,14 +1,16 @@
+import { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import API_BASE from "../config/api";
-
 import { useNavigate, Link } from "react-router-dom";
 import toast from "react-hot-toast";
-import { FileSignature } from "lucide-react";
+import { FileSignature, Eye, EyeOff } from "lucide-react";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -140,12 +142,21 @@ const RegisterPage = () => {
             <label className="text-xs font-mono text-military-400 uppercase ml-1">
               Set Access Code
             </label>
-            <input
-              name="password"
-              type="password"
-              className="w-full p-3 bg-military-950 border border-military-700 text-military-100 focus:border-military-400 focus:outline-none font-mono"
-              {...formik.getFieldProps("password")}
-            />
+            <div className="relative">
+              <input
+                name="password"
+                type={showPassword ? "text" : "password"}
+                className="w-full p-3 pr-12 bg-military-950 border border-military-700 text-military-100 focus:border-military-400 focus:outline-none font-mono"
+                {...formik.getFieldProps("password")}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-military-500 hover:text-military-200 transition-colors"
+              >
+                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
+            </div>
             {formik.touched.password && formik.errors.password && (
               <p className="text-red-500 text-xs mt-1 ml-1 font-mono uppercase">
                 {formik.errors.password}
@@ -157,12 +168,21 @@ const RegisterPage = () => {
             <label className="text-xs font-mono text-military-400 uppercase ml-1">
               Confirm Code
             </label>
-            <input
-              name="confirmPassword"
-              type="password"
-              className="w-full p-3 bg-military-950 border border-military-700 text-military-100 focus:border-military-400 focus:outline-none font-mono"
-              {...formik.getFieldProps("confirmPassword")}
-            />
+            <div className="relative">
+              <input
+                name="confirmPassword"
+                type={showConfirmPassword ? "text" : "password"}
+                className="w-full p-3 pr-12 bg-military-950 border border-military-700 text-military-100 focus:border-military-400 focus:outline-none font-mono"
+                {...formik.getFieldProps("confirmPassword")}
+              />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-military-500 hover:text-military-200 transition-colors"
+              >
+                {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
+            </div>
             {formik.touched.confirmPassword &&
               formik.errors.confirmPassword && (
                 <p className="text-red-500 text-xs mt-1 ml-1 font-mono uppercase">

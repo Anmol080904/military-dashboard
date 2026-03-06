@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
@@ -6,11 +7,12 @@ import { useDispatch } from "react-redux";
 import { loginReducer } from "../features/auth/authSlice";
 import { useNavigate, Link } from "react-router-dom";
 import toast from "react-hot-toast";
-import { ShieldBan } from "lucide-react";
+import { ShieldBan, Eye, EyeOff } from "lucide-react";
 
 const LoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
 
   const formik = useFormik({
     initialValues: { email: "", password: "" },
@@ -88,12 +90,21 @@ const LoginPage = () => {
             <label className="text-xs font-mono text-military-400 uppercase ml-1">
               Access Code (Password)
             </label>
-            <input
-              name="password"
-              type="password"
-              className="w-full p-3 bg-military-950 border border-military-700 text-military-100 focus:border-military-400 focus:outline-none font-mono"
-              {...formik.getFieldProps("password")}
-            />
+            <div className="relative">
+              <input
+                name="password"
+                type={showPassword ? "text" : "password"}
+                className="w-full p-3 pr-12 bg-military-950 border border-military-700 text-military-100 focus:border-military-400 focus:outline-none font-mono"
+                {...formik.getFieldProps("password")}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-military-500 hover:text-military-200 transition-colors"
+              >
+                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
+            </div>
             {formik.touched.password && formik.errors.password && (
               <p className="text-red-500 text-xs mt-1 ml-1 font-mono uppercase">
                 {formik.errors.password}

@@ -21,6 +21,7 @@ import {
   useUpdateMission,
   useDeleteMission,
 } from "../hooks/useApi";
+import DeleteConfirmModal from "../components/DeleteConfirmModal";
 
 const PRIORITY_OPTIONS = ["Critical", "Medium", "Low"];
 const STATUS_OPTIONS = ["Pending", "Ongoing", "Completed"];
@@ -56,6 +57,7 @@ const MissionSchedule = () => {
   const [formData, setFormData] = useState(emptyForm);
   const [error, setError] = useState(null);
   const [filterPriority, setFilterPriority] = useState("All");
+  const [deleteTarget, setDeleteTarget] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -104,14 +106,20 @@ const MissionSchedule = () => {
     setError(null);
   };
 
-  const handleDelete = async (id) => {
-    if (!confirm("Confirm deletion of this mission directive?")) return;
+  const handleDeleteClick = (mission) => {
+    setDeleteTarget(mission);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!deleteTarget) return;
     try {
       setError(null);
-      await deleteMission.mutateAsync(id);
+      await deleteMission.mutateAsync(deleteTarget.id);
     } catch (err) {
       console.error("Failed to delete mission:", err);
       setError("Failed to delete mission directive.");
+    } finally {
+      setDeleteTarget(null);
     }
   };
 
@@ -376,7 +384,7 @@ const MissionSchedule = () => {
                     <motion.button
                       whileHover={{ scale: 1.15 }}
                       whileTap={{ scale: 0.9 }}
-                      onClick={() => handleDelete(mission.id)}
+                      onClick={() => handleDeleteClick(mission)}
                       className="p-1.5 border border-military-600 text-military-400 hover:text-red-500 hover:border-red-500 transition-colors"
                     >
                       <Trash2 size={14} />
@@ -400,6 +408,13 @@ const MissionSchedule = () => {
           )}
         </div>
       )}
+
+      <DeleteConfirmModal
+        isOpen={!!deleteTarget}
+        onClose={() => setDeleteTarget(null)}
+        onConfirm={handleDeleteConfirm}
+        itemName={deleteTarget?.name || "this mission directive"}
+      />
     </AnimatedPage>
   );
 };
