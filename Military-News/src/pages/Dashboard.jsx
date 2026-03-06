@@ -226,12 +226,21 @@ const Dashboard = () => {
             Tactical Actions
           </h3>
           <div className="grid grid-cols-2 gap-3">
-            <button
-              onClick={() => setShowRecruitForm(true)}
-              className="p-4 border-2 border-dashed border-military-600 rounded-sm text-sm font-bold text-military-300 hover:border-military-400 hover:text-military-100 hover:bg-military-700 transition-all font-stencil uppercase"
-            >
-              + Recruit Soldier
-            </button>
+            {user?.role === "general" || user?.role === "captain" ? (
+              <button
+                onClick={() => setShowRecruitForm(true)}
+                className="p-4 border-2 border-dashed border-military-600 rounded-sm text-sm font-bold text-military-300 hover:border-military-400 hover:text-military-100 hover:bg-military-700 transition-all font-stencil uppercase"
+              >
+                + Recruit Soldier
+              </button>
+            ) : (
+              <div className="p-4 border-2 border-dashed border-military-700 rounded-sm text-sm text-military-600 font-stencil uppercase opacity-60 cursor-not-allowed flex flex-col items-center justify-center gap-1">
+                <span>+ Recruit Soldier</span>
+                <span className="text-[10px] font-mono text-red-500/70 normal-case tracking-normal">
+                  Requires Captain / General rank
+                </span>
+              </div>
+            )}
             <button
               onClick={() => setShowDeployMap(true)}
               className="p-4 border-2 border-dashed border-military-600 rounded-sm text-sm font-bold text-military-300 hover:border-military-400 hover:text-military-100 hover:bg-military-700 transition-all font-stencil uppercase"

@@ -33,6 +33,7 @@ const LoginPage = () => {
               name: values.email.split("@")[0],
               email: values.email,
               password: values.password,
+              role: response.data.role,
             },
             token: response.data.access_token,
           };
