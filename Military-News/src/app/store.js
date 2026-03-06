@@ -8,7 +8,7 @@ import notificationsReducer from "../features/notifications/notificationsSlice";
 const persistConfig = {
   key: "military-dashboard",
   storage,
-  whitelist: ["auth", "notifications"],
+  whitelist: ["auth"],
 };
 
 const rootReducer = combineReducers({
