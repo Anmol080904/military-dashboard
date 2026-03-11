@@ -221,7 +221,43 @@ const Logs = () => {
                       },
                       status: {
                         description: "Check system status",
-                        fn: () => "All systems nominal.",
+                        fn: () => "All systems nominal: DEFCON 3",
+                      },
+                      deploy: {
+                        description: "Initiate deployment of tactical units",
+                        fn: () =>
+                          "Deployment initiated... Units moving to designated sectors.",
+                      },
+                      intel: {
+                        description: "Fetch latest classified intelligence",
+                        fn: () =>
+                          "Fetching intelligence... Warning: Unauthorized access attempts detected in Sector 7.",
+                      },
+                      purge: {
+                        description: "Execute emergency data wipe protocol",
+                        fn: () =>
+                          "Initiating remote wipe... All classified logs purged successfully.",
+                      },
+                      encrypt: {
+                        description:
+                          "Engage maximum encryption on current channel",
+                        fn: () =>
+                          "Military-grade AES-256 encryption active. Secure channel established.",
+                      },
+                      defcon: {
+                        description: "Update current DEFCON status [1-5]",
+                        fn: (...args) => {
+                          const level = args[0];
+                          if (["1", "2", "3", "4", "5"].includes(level)) {
+                            return `DEFCON level updated to ${level}. Alert status elevated.`;
+                          }
+                          return "Invalid DEFCON level. Please specify a level from 1 to 5. Format: defcon <level>";
+                        },
+                      },
+                      scan: {
+                        description: "Run advanced radar scan of perimeter",
+                        fn: () =>
+                          "Scanning perimeter... 3 bogeys detected approaching at high speed.",
                       },
                     }}
                     welcomeMessage={
